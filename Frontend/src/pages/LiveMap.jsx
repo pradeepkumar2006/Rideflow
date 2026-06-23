@@ -96,7 +96,7 @@ export function LiveMap({ tripDetails, onEndTrip }) {
         navigator.geolocation.clearWatch(watchIdRef.current);
       }
     };
-  }, [tripDetails]);
+  }, [tripDetails, locationGranted]);
 
   const toggleAlarm = () => {
     setAlarmSet(!alarmSet);
@@ -111,7 +111,9 @@ export function LiveMap({ tripDetails, onEndTrip }) {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-           // Access granted!
+           // Access granted! Set initial position immediately
+           const { latitude, longitude } = pos.coords;
+           setPosition([latitude, longitude]);
            setLocationGranted(true);
         },
         (err) => {
